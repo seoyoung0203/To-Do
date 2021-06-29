@@ -50,6 +50,13 @@ export default function App() {
     alert('new Task!');
     setTasks({ ...tasks, ...newTaskObject });
   };
+
+  const deleteTask = (id) => {
+    const currentTasks = Object.assign({}, tasks);
+    delete currentTasks[id];
+    setTasks(currentTasks);
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <Container>
@@ -68,7 +75,7 @@ export default function App() {
           {Object.values(tasks)
             .reverse()
             .map((item) => (
-              <Task key={item.id} text={item.text} />
+              <Task key={item.id} item={item} deleteTask={deleteTask} />
             ))}
         </List>
       </Container>
