@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { StatusBar } from 'react-native';
+import { StatusBar, Dimensions } from 'react-native';
 import styled, { ThemeProvider } from 'styled-components';
 import Input from './components/Input';
 import { theme } from './theme';
+import Task from './components/Task';
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -20,7 +21,13 @@ const Title = styled.Text`
   padding: 0 20px;
 `;
 
+const List = styled.ScrollView`
+  flex: 1;
+  width: ${({ width }) => width - 40}px;
+`;
+
 export default function App() {
+  const width = Dimensions.get('window').width;
   const [newTask, setNewTask] = useState('');
   const addTask = () => {
     alert('new Task!');
@@ -40,6 +47,16 @@ export default function App() {
           onChangeText={(text) => setNewTask(text)}
           onSubmitEditing={addTask}
         />
+        <List width={width}>
+          <Task text="React Native" />
+          <Task text="React Native1" />
+          <Task text="React Native2" />
+          <Task text="React Native3" />
+          <Task text="React Native4" />
+          <Task text="React Native5" />
+          <Task text="React Native6" />
+          <Task text="React Native7" />
+        </List>
       </Container>
     </ThemeProvider>
   );
