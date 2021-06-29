@@ -28,10 +28,27 @@ const List = styled.ScrollView`
 
 export default function App() {
   const width = Dimensions.get('window').width;
+
+  const tempData = {
+    1: { id: '1', text: 'react-native', completed: false },
+    2: { id: '2', text: 'expo', completed: true },
+    3: { id: '3', text: 'javascript', completed: false },
+  };
+  const [tasks, setTasks] = useState(tempData);
+
   const [newTask, setNewTask] = useState('');
+
   const addTask = () => {
-    alert('new Task!');
+    if (newTask.length < 1) {
+      return;
+    }
+    const ID = Date.now().toString();
+    const newTaskObject = {
+      [ID]: { id: ID, text: newTask, completed: false },
+    };
     setNewTask('');
+    alert('new Task!');
+    setTasks({ ...tasks, ...newTaskObject });
   };
   return (
     <ThemeProvider theme={theme}>
@@ -48,14 +65,11 @@ export default function App() {
           onSubmitEditing={addTask}
         />
         <List width={width}>
-          <Task text="React Native" />
-          <Task text="React Native1" />
-          <Task text="React Native2" />
-          <Task text="React Native3" />
-          <Task text="React Native4" />
-          <Task text="React Native5" />
-          <Task text="React Native6" />
-          <Task text="React Native7" />
+          {Object.values(tasks)
+            .reverse()
+            .map((item) => (
+              <Task key={item.id} text={item.text} />
+            ))}
         </List>
       </Container>
     </ThemeProvider>
