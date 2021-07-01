@@ -8,15 +8,21 @@ const StyledInput = styled.TextInput.attrs(({ theme }) => ({
 }))`
   width: ${({ width }) => width - 40}px;
   height: 60px;
-  margin: 15px 20px;
+  margin: 3px 0;
   padding: 15px 20px;
   border-radius: 10px;
-  font-size: 24px;
+  font-size: 25px;
   background-color: ${({ theme }) => theme.itemBackground};
   color: ${({ theme }) => theme.text};
 `;
 
-const Input = ({ placeholder, value, onChangeText, onSubmitEditing }) => {
+const Input = ({
+  placeholder,
+  value,
+  onChangeText,
+  onSubmitEditing,
+  onBlur,
+}) => {
   // const width = Dimensions.get('window').width;
   const width = useWindowDimensions().width;
   return (
@@ -31,6 +37,7 @@ const Input = ({ placeholder, value, onChangeText, onSubmitEditing }) => {
       value={value}
       onChangeText={onChangeText}
       onSubmitEditing={onSubmitEditing}
+      onBlur={onBlur}
     />
   );
 };
@@ -40,6 +47,7 @@ Input.propTypes = {
   value: PropTypes.string.isRequired,
   onChangeText: PropTypes.func.isRequired,
   onSubmitEditing: PropTypes.func.isRequired,
+  onBlur: PropTypes.func,
 };
 
 export default Input;

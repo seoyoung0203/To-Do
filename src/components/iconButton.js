@@ -16,6 +16,7 @@ const IconButton = ({ icon, onPress, item }) => {
   const _onPress = () => {
     onPress(item.id);
   };
+
   return (
     <TouchableOpacity onPress={_onPress}>
       <View>
