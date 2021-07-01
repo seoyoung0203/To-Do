@@ -8,6 +8,7 @@ import Input from './Input';
 const Container = styled.View`
   flex-direction: row;
   align-items: center;
+  border-radius: 10px;
   background-color: ${({ theme }) => theme.itemBackground};
   padding: 5px;
   margin: 3px 0;

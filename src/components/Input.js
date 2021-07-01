@@ -8,7 +8,7 @@ const StyledInput = styled.TextInput.attrs(({ theme }) => ({
 }))`
   width: ${({ width }) => width - 40}px;
   height: 60px;
-  margin: 3px 0;
+  margin: 10px 0px;
   padding: 15px 20px;
   border-radius: 10px;
   font-size: 25px;
