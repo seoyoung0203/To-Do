@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { StatusBar, Dimensions } from 'react-native';
 import styled, { ThemeProvider } from 'styled-components';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import AppLoading from 'expo-app-loading';
 import Input from './components/Input';
 import { theme } from './theme';
 import Task from './components/Task';
@@ -29,14 +31,19 @@ const List = styled.ScrollView`
 export default function App() {
   const width = Dimensions.get('window').width;
 
-  const tempData = {
-    1: { id: '1', text: 'react-native', completed: false },
-    2: { id: '2', text: 'expo', completed: true },
-    3: { id: '3', text: 'javascript', completed: false },
-  };
-  const [tasks, setTasks] = useState(tempData);
-
+  const [tasks, setTasks] = useState({});
   const [newTask, setNewTask] = useState('');
+  const [isReady, setIsReady] = useState(false);
+
+  const getData = async () => {
+    const loadedData = await AsyncStorage.getItem('tasks');
+    setTasks(JSON.parse(loadedData || '{}'));
+  };
+
+  const storeData = async (tasks) => {
+    await AsyncStorage.setItem('tasks', JSON.stringify(tasks));
+    setTasks(tasks);
+  };
 
   const addTask = () => {
     if (newTask.length < 1) {
@@ -47,29 +54,28 @@ export default function App() {
       [ID]: { id: ID, text: newTask, completed: false },
     };
     setNewTask('');
-    alert('new Task!');
-    setTasks({ ...tasks, ...newTaskObject });
+    storeData({ ...tasks, ...newTaskObject });
   };
 
   const deleteTask = (id) => {
     const currentTasks = Object.assign({}, tasks);
     delete currentTasks[id];
-    setTasks(currentTasks);
+    storeData(currentTasks);
   };
 
   const toggleTask = (id) => {
     const currentTasks = Object.assign({}, tasks);
     currentTasks[id]['completed'] = !currentTasks[id]['completed'];
-    setTasks(currentTasks);
+    storeData(currentTasks);
   };
 
   const updateTask = (item) => {
     const currentTasks = Object.assign({}, tasks);
     currentTasks[item.id] = item;
-    setTasks(currentTasks);
+    storeData(currentTasks);
   };
 
-  return (
+  return isReady ? (
     <ThemeProvider theme={theme}>
       <Container>
         <Title>TO_DO List</Title>
@@ -99,5 +105,11 @@ export default function App() {
         </List>
       </Container>
     </ThemeProvider>
+  ) : (
+    <AppLoading
+      startAsync={getData}
+      onFinish={() => setIsReady(true)}
+      onError={() => {}}
+    />
   );
 }
